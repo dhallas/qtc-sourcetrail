@@ -1,9 +1,8 @@
-#ifndef SOURCETRAILPLUGINSETTINGSPAGE_H
-#define SOURCETRAILPLUGINSETTINGSPAGE_H
+#pragma once
 
 #include "sourcetrail_global.h"
-
 #include "sourcetrailpluginsettings.h"
+
 #include <coreplugin/dialogs/ioptionspage.h>
 
 #include <QPointer>
@@ -14,28 +13,26 @@ namespace Ui { class SourceTrailPluginSettingsPage; }
 
 class SourceTrailPluginSettingsPage : public Core::IOptionsPage
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	SourceTrailPluginSettingsPage(QObject* parent);
-	~SourceTrailPluginSettingsPage();
+    SourceTrailPluginSettingsPage(QObject *parent);
+    ~SourceTrailPluginSettingsPage();
 
-	// IOptionsPage
-	QWidget* widget();
-	void apply();
-	void finish();
+    // IOptionsPage
+    QWidget *widget();
+    void apply();
+    void finish();
 
 signals:
-	void SourceTrailPluginSettingsChanged(const SourceTrailPluginSettings &);
+    void SourceTrailPluginSettingsChanged(const SourceTrailPluginSettings &);
 
 private:
-	Ui::SourceTrailPluginSettingsPage* m_page;
-	QPointer<QWidget> m_widget;
-	SourceTrailPluginSettings m_settings;
+    void settingsFromUi(SourceTrailPluginSettings &sourcetrail) const;
 
-	void settingsFromUi(SourceTrailPluginSettings& sourcetrail) const;
+    Ui::SourceTrailPluginSettingsPage *m_page;
+    QPointer<QWidget> m_widget;
+    SourceTrailPluginSettings m_settings;
 };
 
-} // namespace SourceTrail
-
-#endif // SOURCETRAILPLUGINSETTINGSPAGE_H
+} // namespace Sourcetrail

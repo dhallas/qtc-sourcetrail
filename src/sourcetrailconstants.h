@@ -16,5 +16,5 @@ const char STATUS_ACTION_ID[] = "QtCreatorSourcetrail.StatusAction";
 const char SERVER_RUNNING[] = "Server Status: Running";
 const char SERVER_STOPPED[] = "Server Status: Stopped";
 
-} // namespace QtCreatorSourceTrail
 } // namespace Constants
+} // namespace Sourcetrail

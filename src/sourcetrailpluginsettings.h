@@ -1,5 +1,4 @@
-#ifndef SOURCETRAILPLUGINSETTINGS_H
-#define SOURCETRAILPLUGINSETTINGS_H
+#pragma once
 
 #include <QObject>
 #include <QString>
@@ -11,22 +10,20 @@ namespace Sourcetrail {
 class SourceTrailPluginSettings
 {
 public:
-	void toSettings(QSettings* s) const;
-	void fromSettings(QSettings* s);
+    void toSettings(QSettings *s) const;
+    void fromSettings(QSettings *s);
 
-	void debugOutput() const;
+    void debugOutput() const;
 
-	bool equals(const SourceTrailPluginSettings &bs) const;
+    bool equals(const SourceTrailPluginSettings &bs) const;
 
-	QString m_hostAddress = "localhost";
-	int m_sourceTrailPort = 6666;
-	int m_pluginPort = 6667;
+    QString m_hostAddress = "localhost";
+    int m_sourceTrailPort = 6666;
+    int m_pluginPort = 6667;
 };
 
 inline bool operator==(const SourceTrailPluginSettings &t1, const SourceTrailPluginSettings &t2) { return t1.equals(t2); }
 inline bool operator!=(const SourceTrailPluginSettings &t1, const SourceTrailPluginSettings &t2) { return !t1.equals(t2); }
 
 
-} // namespace SoureTrailPlugin
-
-#endif // SOURCETRAILPLUGINSETTINGS_H
+} // namespace Sourcetrail
