@@ -11,11 +11,11 @@
 namespace Sourcetrail
 {
 
-enum SourceTrailPluginOptions
+enum SourcetrailPluginOptions
 {
     hostAddress = 1,
     pluginPort = 2,
-    sourceTrailPort = 3
+    sourcetrailPort = 3
 };
 
 } // namespace Sourcetrail

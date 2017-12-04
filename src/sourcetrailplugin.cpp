@@ -1,40 +1,19 @@
 #include "sourcetrailplugin.h"
+
 #include "sourcetrailconstants.h"
 
-#include <coreplugin/icore.h>
-#include <coreplugin/icontext.h>
 #include <coreplugin/actionmanager/actionmanager.h>
-#include <coreplugin/actionmanager/command.h>
 #include <coreplugin/actionmanager/actioncontainer.h>
-#include <coreplugin/coreconstants.h>
-#include <coreplugin/textdocument.h>
-#include <extensionsystem/pluginmanager.h>
+#include <coreplugin/editormanager/editormanager.h>
+#include <coreplugin/icore.h>
+#include <cppeditor/cppeditorconstants.h>
 #include <texteditor/texteditor.h>
 
-#include <QtPlugin>
 #include <QAction>
-#include <QMessageBox>
-#include <QPlainTextEdit>
-#include <QMainWindow>
+#include <QMessageBox> // TODO: change text here
 #include <QMenu>
 #include <QTcpSocket>
-#include <QStringList>
 #include <QTcpServer>
-#include <QTextEdit>
-#include <QTextDocument>
-#include <QTextCursor>
-#include <QFile>
-#include <utils/fileutils.h>
-#include <texteditor/textdocument.h>
-#include <texteditor/texteditor.h>
-#include <coreplugin/editormanager/editormanager.h>
-#include <memory>
-#include <QTcpServer>
-#include <cppeditor/cppeditorconstants.h>
-#include <QStatusBar>
-#include <QPushButton>
-#include <coreplugin/infobar.h>
-#include <coreplugin/statusbarwidget.h>
 
 using namespace Core;
 
@@ -53,12 +32,6 @@ SourcetrailPlugin::SourcetrailPlugin()
             this->handleMessage(QString::fromLatin1(connection->readAll()));
         });
     });
-
-//  m_statusBar = new StatusBarWidget();
-//  m_statusBar->setWidget(new QLabel("Test"));
-//  m_statusBar->setPosition(StatusBarWidget::LastLeftAligned);
-//  addAutoReleasedObject(m_statusBar);
-
 }
 
 void SourcetrailPlugin::handleMessage(QString message)
@@ -105,28 +78,31 @@ bool SourcetrailPlugin::initialize(const QStringList &arguments, QString *errorS
     Q_UNUSED(arguments)
     Q_UNUSED(errorString)
 
-    m_page = new SourceTrailPluginSettingsPage(this);
+    m_page = new SourcetrailPluginSettingsPage(this);
     addAutoReleasedObject(m_page);
-    connect(m_page, &SourceTrailPluginSettingsPage::SourceTrailPluginSettingsChanged,
+    connect(m_page, &SourcetrailPluginSettingsPage::SourcetrailPluginSettingsChanged,
             this, &SourcetrailPlugin::restartServer);
 
     // (re-)start server
     QAction *startAction = new QAction(tr("Start Sourcetrail Listener"), this);
-    Core::Command *restartCommand = Core::ActionManager::registerAction(startAction, Constants::RESTART_ACTION_ID,
-                                                             Core::Context(Core::Constants::C_GLOBAL));
+    Core::Command *restartCommand = Core::ActionManager::registerAction(startAction,
+                                                                        Constants::RESTART_ACTION_ID,
+                                                                        Core::Context(Core::Constants::C_GLOBAL));
 
     connect(startAction, &QAction::triggered, this,  &SourcetrailPlugin::restartServer);
 
     // stop server
     QAction *stopAction = new QAction(tr("Stop Sourcetrail Listener"), this);
-    Core::Command *stopCommand = Core::ActionManager::registerAction(stopAction, Constants::STOP_ACTION_ID,
-                                                             Core::Context(Core::Constants::C_GLOBAL));
+    Core::Command *stopCommand = Core::ActionManager::registerAction(stopAction,
+                                                                     Constants::STOP_ACTION_ID,
+                                                                     Core::Context(Core::Constants::C_GLOBAL));
 
     connect(stopAction, &QAction::triggered, this,  &SourcetrailPlugin::stopServer);
 
     // send location
     QAction *action = new QAction(QIcon(Constants::CATEGORY_ICON),tr("Send Location to Sourctrail"), this);
-    Core::Command *cmd = Core::ActionManager::registerAction(action, Constants::SEND_ACTION_ID,
+    Core::Command *cmd = Core::ActionManager::registerAction(action,
+                                                             Constants::SEND_ACTION_ID,
                                                              Core::Context(Core::Constants::C_GLOBAL));
     cmd->setDefaultKeySequence(QKeySequence(tr("Alt+S,Alt+S")));
     connect(action, &QAction::triggered, this, &SourcetrailPlugin::triggerAction);
@@ -134,8 +110,9 @@ bool SourcetrailPlugin::initialize(const QStringList &arguments, QString *errorS
     // action to show if the server is running TODO: move to statusbar or ...
     QAction *statusAction = new QAction(tr("Server Status:" ), this);
     statusAction->setEnabled(false);
-    m_statusCommand = Core::ActionManager::registerAction(statusAction, Constants::STATUS_ACTION_ID,
-                                                             Core::Context(Core::Constants::C_GLOBAL));
+    m_statusCommand = Core::ActionManager::registerAction(statusAction,
+                                                          Constants::STATUS_ACTION_ID,
+                                                          Core::Context(Core::Constants::C_GLOBAL));
 
     // sourctrail menu
     Core::ActionContainer *menu = Core::ActionManager::createMenu(Constants::MENU_ID);
@@ -152,7 +129,6 @@ bool SourcetrailPlugin::initialize(const QStringList &arguments, QString *errorS
     if (ActionContainer *editorContextMenu =
             ActionManager::actionContainer(CppEditor::Constants::M_CONTEXT))
     {
-//      editorContextMenu->addMenu(menu);
         editorContextMenu->addAction(cmd);
     }
 
@@ -181,11 +157,11 @@ void SourcetrailPlugin::stopServer()
 
 void SourcetrailPlugin::startListening()
 {
-    if (!m_server->listen(QHostAddress::LocalHost, m_settings.m_sourceTrailPort))
+    if (!m_server->listen(QHostAddress::LocalHost, m_settings.m_sourcetrailPort))
     {
         QMessageBox::warning(Core::ICore::mainWindow(),
-                                 tr("SourceTrailPlugin Tcp Server"),
-                                 tr("Could not listen to port"));
+                             tr("SourcetrailPlugin Tcp Server"),
+                             tr("Could not listen to port"));
     }
     else
     {

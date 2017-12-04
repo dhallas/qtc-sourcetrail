@@ -1,16 +1,13 @@
 #include "sourcetrailpluginsettingspage.h"
+
+#include "sourcetrailconstants.h"
 #include "ui_sourcetrailpluginsettingspage.h"
 
-#include <QSettings>
 #include <coreplugin/icore.h>
-#include <QLineEdit>
-#include "sourcetrailpluginsettings.h"
-#include "sourcetrailconstants.h"
-#include <projectexplorer/projectexplorerconstants.h>
 
 namespace Sourcetrail {
 
-SourceTrailPluginSettingsPage::SourceTrailPluginSettingsPage(QObject *parent) :
+SourcetrailPluginSettingsPage::SourcetrailPluginSettingsPage(QObject *parent) :
     Core::IOptionsPage(parent),
     m_page(0)
 {
@@ -25,31 +22,31 @@ SourceTrailPluginSettingsPage::SourceTrailPluginSettingsPage(QObject *parent) :
     m_settings.fromSettings(s);
 }
 
-SourceTrailPluginSettingsPage::~SourceTrailPluginSettingsPage()
+SourcetrailPluginSettingsPage::~SourcetrailPluginSettingsPage()
 {
     delete m_page;
 }
 
-QWidget *SourceTrailPluginSettingsPage::widget()
+QWidget *SourcetrailPluginSettingsPage::widget()
 {
     if (!m_widget) {
         m_widget = new QWidget;
-        m_page = new Ui::SourceTrailPluginSettingsPage;
+        m_page = new Ui::SourcetrailPluginSettingsPage;
         m_page->setupUi(m_widget);
 
         m_page->hostaddress->setText(m_settings.m_hostAddress);
         m_page->pluginport->setText(QString::number(m_settings.m_pluginPort));
-        m_page->sourcetrailport->setText(QString::number(m_settings.m_sourceTrailPort));
+        m_page->sourcetrailport->setText(QString::number(m_settings.m_sourcetrailPort));
     }
     return m_widget;
 }
 
-void SourceTrailPluginSettingsPage::apply()
+void SourcetrailPluginSettingsPage::apply()
 {
     if (!m_page) // page was never shown
         return;
 
-    SourceTrailPluginSettings setting;
+    SourcetrailPluginSettings setting;
     settingsFromUi(setting);
 
     if (m_settings != setting)
@@ -57,13 +54,11 @@ void SourceTrailPluginSettingsPage::apply()
         m_settings = setting;
         QSettings *s = Core::ICore::settings();
         m_settings.toSettings(s);
-        emit SourceTrailPluginSettingsChanged(setting);
+        emit SourcetrailPluginSettingsChanged(setting);
     }
-
-//  m_settings.debugOutput();
 }
 
-void SourceTrailPluginSettingsPage::finish()
+void SourcetrailPluginSettingsPage::finish()
 {
     delete m_widget;
     if (!m_page) // page was never shown
@@ -72,14 +67,14 @@ void SourceTrailPluginSettingsPage::finish()
     m_page = 0;
 }
 
-void SourceTrailPluginSettingsPage::settingsFromUi(SourceTrailPluginSettings &settings) const
+void SourcetrailPluginSettingsPage::settingsFromUi(SourcetrailPluginSettings &settings) const
 {
     if (!m_page)
         return;
 
     settings.m_hostAddress = m_page->hostaddress->text();
     settings.m_pluginPort = m_page->pluginport->text().toInt();
-    settings.m_sourceTrailPort = m_page->sourcetrailport->text().toInt();
+    settings.m_sourcetrailPort = m_page->sourcetrailport->text().toInt();
 }
 
 } // namespace Sourcetrail

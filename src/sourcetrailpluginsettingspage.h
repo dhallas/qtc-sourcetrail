@@ -9,15 +9,15 @@
 
 namespace Sourcetrail {
 
-namespace Ui { class SourceTrailPluginSettingsPage; }
+namespace Ui { class SourcetrailPluginSettingsPage; }
 
-class SourceTrailPluginSettingsPage : public Core::IOptionsPage
+class SourcetrailPluginSettingsPage : public Core::IOptionsPage
 {
     Q_OBJECT
 
 public:
-    SourceTrailPluginSettingsPage(QObject *parent);
-    ~SourceTrailPluginSettingsPage();
+    SourcetrailPluginSettingsPage(QObject *parent);
+    ~SourcetrailPluginSettingsPage();
 
     // IOptionsPage
     QWidget *widget();
@@ -25,14 +25,14 @@ public:
     void finish();
 
 signals:
-    void SourceTrailPluginSettingsChanged(const SourceTrailPluginSettings &);
+    void SourcetrailPluginSettingsChanged(const SourcetrailPluginSettings &);
 
 private:
-    void settingsFromUi(SourceTrailPluginSettings &sourcetrail) const;
+    void settingsFromUi(SourcetrailPluginSettings &sourcetrail) const;
 
-    Ui::SourceTrailPluginSettingsPage *m_page;
+    Ui::SourcetrailPluginSettingsPage *m_page;
     QPointer<QWidget> m_widget;
-    SourceTrailPluginSettings m_settings;
+    SourcetrailPluginSettings m_settings;
 };
 
 } // namespace Sourcetrail

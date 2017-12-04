@@ -42,8 +42,8 @@ private:
     void setCursor(QString file, int line, int column);
 
     QTcpServer *m_server;
-    SourceTrailPluginSettingsPage *m_page;
-    SourceTrailPluginSettings m_settings;
+    SourcetrailPluginSettingsPage *m_page;
+    SourcetrailPluginSettings m_settings;
     StatusBarWidget *m_statusBar;
     Core::Command *m_statusCommand;
 };
